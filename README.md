@@ -17,6 +17,7 @@ The project demonstrates how relational data can be structured, connected and an
 The database currently contains four main tables:
 
 ### personagens
+
 Stores character information such as:
 
 - name
@@ -28,6 +29,7 @@ Stores character information such as:
 - guild
 
 ### guildas
+
 Stores guild information including:
 
 - guild name
@@ -35,6 +37,7 @@ Stores guild information including:
 - realm
 
 ### itens
+
 Stores game items and attributes such as:
 
 - item name
@@ -43,6 +46,7 @@ Stores game items and attributes such as:
 - item level
 
 ### inventario
+
 Connects characters and items through a many-to-many relationship.
 
 It also stores:
@@ -69,50 +73,60 @@ INVENTARIO
    ↑
    |
  ITENS
+```
 
-The inventario table acts as a junction table between characters and items.
+The `inventario` table acts as a junction table between characters and items.
 
-🧠 SQL Concepts Practiced
+---
+
+## 🧠 SQL Concepts Practiced
 
 The project includes practical examples of:
 
-CREATE TABLE
-INSERT
-UPDATE
-SELECT
-PRIMARY KEY
-FOREIGN KEY
-JOIN
-LEFT JOIN
-GROUP BY
-HAVING
-COUNT()
-SUM()
-AVG()
-MAX()
-subqueries
-Common Table Expressions (CTEs)
-weighted averages
-Window Functions
-RANK()
-DENSE_RANK()
-ROW_NUMBER()
-📊 Analytical Queries
+- CREATE TABLE
+- INSERT
+- UPDATE
+- SELECT
+- PRIMARY KEY
+- FOREIGN KEY
+- JOIN
+- LEFT JOIN
+- GROUP BY
+- HAVING
+- COUNT()
+- SUM()
+- AVG()
+- MAX()
+- subqueries
+- Common Table Expressions (CTEs)
+- weighted averages
+- Window Functions
+- RANK()
+- DENSE_RANK()
+- ROW_NUMBER()
+
+---
+
+## 📊 Analytical Queries
 
 The database can answer questions such as:
 
-How many characters belong to each faction?
-How many characters belong to each guild?
-Which items does each character own?
-How many items does each character have?
-What is the average item level for each character?
-What is the weighted average item level considering item quantity?
-Which character owns the highest-level item?
-How can characters be ranked based on their inventory?
-🏆 Character Ranking Example
+- How many characters belong to each faction?
+- How many characters belong to each guild?
+- Which items does each character own?
+- How many items does each character have?
+- What is the average item level for each character?
+- What is the weighted average item level considering item quantity?
+- Which character owns the highest-level item?
+- How can characters be ranked based on their inventory?
+
+---
+
+## 🏆 Character Ranking Example
 
 A CTE and Window Function are used to generate a ranking based on weighted average item level:
 
+```sql
 WITH pontuacao AS (
     SELECT
         personagens.nome AS personagem,
@@ -137,40 +151,55 @@ SELECT
     ) AS ranking
 FROM pontuacao
 ORDER BY ranking;
+```
 
 Example result:
 
+```text
 Thrall     | 100.00 | 1
 Sylvanas   | 70.00  | 2
 Jaina      | 22.50  | 3
 Tyrande    | 10.00  | 4
 Anduin     | 1.00   | 5
-🛠️ Technologies
-PostgreSQL
-pgAdmin 4
-SQL
-Relational Database Modeling
-Data Analysis
-🚀 Project Roadmap
- Create PostgreSQL database
- Create relational tables
- Implement Primary Keys
- Implement Foreign Keys
- Create one-to-many relationships
- Create many-to-many relationships
- Insert sample data
- Practice JOIN operations
- Create aggregation queries
- Use subqueries
- Use CTEs
- Use Window Functions
- Add faction-based ranking with PARTITION BY
- Add additional analytical queries
- Document complete database schema
-🎯 Project Goal
+```
+
+---
+
+## 🛠️ Technologies
+
+- PostgreSQL
+- pgAdmin 4
+- SQL
+- Relational Database Modeling
+- Data Analysis
+
+---
+
+## 🚀 Project Roadmap
+
+- [x] Create PostgreSQL database
+- [x] Create relational tables
+- [x] Implement Primary Keys
+- [x] Implement Foreign Keys
+- [x] Create one-to-many relationships
+- [x] Create many-to-many relationships
+- [x] Insert sample data
+- [x] Practice JOIN operations
+- [x] Create aggregation queries
+- [x] Use subqueries
+- [x] Use CTEs
+- [x] Use Window Functions
+- [ ] Add faction-based ranking with PARTITION BY
+- [ ] Add additional analytical queries
+- [ ] Document complete database schema
+
+---
+
+## 🎯 Project Goal
 
 The goal of this project is to demonstrate practical knowledge of PostgreSQL, relational database modeling and analytical SQL.
 
+```text
 RAW GAME DATA
       ↓
 RELATIONAL MODEL
@@ -180,14 +209,14 @@ SQL QUERIES
 DATA AGGREGATION
       ↓
 ANALYTICAL INSIGHTS
+```
 
-A well-designed relational database transforms structured data into information that can support analysis and decision-making.
+> A well-designed relational database transforms structured data into information that can support analysis and decision-making.
 
-⚠️ Disclaimer
+---
+
+## ⚠️ Disclaimer
 
 This is an educational and portfolio project using a fictional MMORPG database.
 
 Game-related names used in sample data are included solely for educational purposes. This project is not affiliated with or endorsed by any game publisher.
-
-
-
