@@ -58,8 +58,6 @@ It also stores:
 
 ## 🔗 Relational Model
 
-The project includes different types of database relationships.
-
 ```text
 GUILDAS
    |
@@ -80,8 +78,6 @@ The `inventario` table acts as a junction table between characters and items.
 ---
 
 ## 🧠 SQL Concepts Practiced
-
-The project includes practical examples of:
 
 - CREATE TABLE
 - INSERT
@@ -104,6 +100,7 @@ The project includes practical examples of:
 - RANK()
 - DENSE_RANK()
 - ROW_NUMBER()
+- PARTITION BY
 
 ---
 
@@ -119,12 +116,11 @@ The database can answer questions such as:
 - What is the weighted average item level considering item quantity?
 - Which character owns the highest-level item?
 - How can characters be ranked based on their inventory?
+- How can characters be ranked separately within each faction?
 
 ---
 
 ## 🏆 Character Ranking Example
-
-A CTE and Window Function are used to generate a ranking based on weighted average item level:
 
 ```sql
 WITH pontuacao AS (
@@ -165,6 +161,52 @@ Anduin     | 1.00   | 5
 
 ---
 
+## 🧭 Faction-Based Ranking with PARTITION BY
+
+```sql
+WITH pontuacao AS (
+    SELECT
+        personagens.nome AS personagem,
+        personagens.faccao,
+        ROUND(
+            SUM(itens.nivel_item * inventario.quantidade)::NUMERIC
+            / NULLIF(SUM(inventario.quantidade), 0),
+            2
+        ) AS nivel_medio_ponderado
+    FROM inventario
+    JOIN personagens
+        ON inventario.personagem_id = personagens.id
+    JOIN itens
+        ON inventario.item_id = itens.id
+    GROUP BY personagens.nome, personagens.faccao
+)
+
+SELECT
+    personagem,
+    faccao,
+    nivel_medio_ponderado,
+    RANK() OVER (
+        PARTITION BY faccao
+        ORDER BY nivel_medio_ponderado DESC
+    ) AS ranking_faccao
+FROM pontuacao
+ORDER BY faccao, ranking_faccao;
+```
+
+Example result:
+
+```text
+Jaina     | Alliance | 22.50  | 1
+Tyrande   | Alliance | 10.00  | 2
+Anduin    | Alliance | 1.00   | 3
+Thrall    | Horde    | 100.00 | 1
+Sylvanas  | Horde    | 70.00  | 2
+```
+
+This query demonstrates how Window Functions can create rankings within separate groups without collapsing the original rows.
+
+---
+
 ## 🛠️ Technologies
 
 - PostgreSQL
@@ -189,7 +231,7 @@ Anduin     | 1.00   | 5
 - [x] Use subqueries
 - [x] Use CTEs
 - [x] Use Window Functions
-- [ ] Add faction-based ranking with PARTITION BY
+- [x] Add faction-based ranking with PARTITION BY
 - [ ] Add additional analytical queries
 - [ ] Document complete database schema
 
@@ -220,3 +262,4 @@ ANALYTICAL INSIGHTS
 This is an educational and portfolio project using a fictional MMORPG database.
 
 Game-related names used in sample data are included solely for educational purposes. This project is not affiliated with or endorsed by any game publisher.
+
